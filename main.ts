@@ -13,7 +13,6 @@ namespace ESP8266 {
     //% weight=82
     export function initializeWifi(tx: SerialPin, rx:SerialPin): void {
         serial.redirect(tx,rx,BaudRate.BaudRate115200);
-        serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {});
     }
     
     // -------------- WiFi ----------------
@@ -39,11 +38,14 @@ namespace ESP8266 {
     export function sendThingspeak(key: string, field1: number): void {
         let message = "GET /update?api_key=" + key + "&field1=" + field1 + "\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.pause(100);
         serial.writeString("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.pause(100);
         serial.writeString(message);
         serial.writeString("AT+CIPCLOSE\r\n");
+        basic.paues(100);
     }
 
     /**
@@ -63,11 +65,15 @@ namespace ESP8266 {
         }
         message = message + "\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.pause(100);
         serial.writeString("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.paues(100);
         serial.writeString(message);
+        basic.paues(100);
         serial.writeString("AT+CIPCLOSE\r\n");
+        basic.paues(100);
     }
     
     /**
@@ -79,11 +85,15 @@ namespace ESP8266 {
     export function sendIFTTT(key: string, eventname: string, value: number): void {
         let message = "GET /trigger/" + eventname + "/with/key/" + key + "?value1=" + value + " HTTP/1.1\r\nHost: maker.ifttt.com\r\nConnection: close\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.paues(100);
         serial.writeString("AT+CIPSTART=\"TCP\",\"maker.ifttt.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.paues(100);
         serial.writeString(message);
+        basic.paues(100);
         serial.writeString("AT+CIPCLOSE\r\n");
+        basic.paues(100);
     }
 
     /**
@@ -103,11 +113,15 @@ namespace ESP8266 {
         }
         message = message + " HTTP/1.1\r\nHost: maker.ifttt.com\r\nConnection: close\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.paues(100);
         serial.writeString("AT+CIPSTART=\"TCP\",\"maker.ifttt.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.paues(100);
         serial.writeString(message);
+        basic.paues(100);
         serial.writeString("AT+CIPCLOSE\r\n");
+        basic.paues(100);
     }
 
 }
