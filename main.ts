@@ -74,7 +74,7 @@ namespace ESP8266 {
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
         basic.pause(500);
         serial.writeString(message);
-        basic.pause(1000);
+        basic.pause(3000);
         serial.writeString("AT+CIPCLOSE\r\n");
     }
 
@@ -120,7 +120,7 @@ namespace ESP8266 {
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
         basic.pause(500);
         serial.writeString(message);
-        basic.pause(1000);
+        basic.pause(3000);
         serial.writeString("AT+CIPCLOSE\r\n");
     }
 
