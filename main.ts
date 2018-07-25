@@ -11,11 +11,10 @@ namespace ESP8266 {
     //% rx.fieldEditor="gridpicker" rx.fieldOptions.columns=3
     //% rx.fieldOptions.tooltips="false"
     //% weight=82
-    export function initializeWifi(tx: SerialPin, rx:SerialPin): void {
-        serial.redirect(tx,rx,BaudRate.BaudRate115200);
-        serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {});
+    export function initializeWifi(tx: SerialPin, rx: SerialPin): void {
+        serial.redirect(tx, rx, BaudRate.BaudRate115200);
     }
-    
+
     // -------------- WiFi ----------------
     /**
      * Set the SSID and Password for the WiFi Module to connect.
@@ -25,8 +24,11 @@ namespace ESP8266 {
     //% weight=81  
     export function setWifi(ssid: string, pwd: string): void {
         serial.writeString("AT+RST\r\n");
+        basic.pause(500);
         serial.writeString("AT+CWMODE=1\r\n");
+        basic.pause(500);
         serial.writeString("AT+CWJAP=\"" + ssid + "\",\"" + pwd + "\"\r\n");
+        basic.pause(500);
     }
 
     // -------------- Cloud Services ----------------
@@ -39,10 +41,13 @@ namespace ESP8266 {
     export function sendThingspeak(key: string, field1: number): void {
         let message = "GET /update?api_key=" + key + "&field1=" + field1 + "\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.pause(500);
         serial.writeString("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.pause(500);
         serial.writeString(message);
+        basic.pause(1000);
         serial.writeString("AT+CIPCLOSE\r\n");
     }
 
@@ -54,22 +59,25 @@ namespace ESP8266 {
     //% weight=77
     export function sendThingspeakwithArray(key: string, fields: number[]): void {
         let message = "GET /update?api_key=" + key + "&";
-        for(let i=0;i<fields.length;i++){
-            if (i == fields.length-1){
-                message = message + "field" + (i+1) + "=" + fields[i];
-            }else{
-                message = message + "field" + (i+1) + "=" + fields[i] + "&";
+        for (let i = 0; i < fields.length; i++) {
+            if (i == fields.length - 1) {
+                message = message + "field" + (i + 1) + "=" + fields[i];
+            } else {
+                message = message + "field" + (i + 1) + "=" + fields[i] + "&";
             }
         }
         message = message + "\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.pause(500);
         serial.writeString("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.pause(500);
         serial.writeString(message);
+        basic.pause(1000);
         serial.writeString("AT+CIPCLOSE\r\n");
     }
-    
+
     /**
      * Send single data to IFTTT Event Trigger.
     */
@@ -79,10 +87,13 @@ namespace ESP8266 {
     export function sendIFTTT(key: string, eventname: string, value: number): void {
         let message = "GET /trigger/" + eventname + "/with/key/" + key + "?value1=" + value + " HTTP/1.1\r\nHost: maker.ifttt.com\r\nConnection: close\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.pause(500)
         serial.writeString("AT+CIPSTART=\"TCP\",\"maker.ifttt.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.pause(500)
         serial.writeString(message);
+        basic.pause(1000)
         serial.writeString("AT+CIPCLOSE\r\n");
     }
 
@@ -94,19 +105,22 @@ namespace ESP8266 {
     //% weight=79
     export function sendIFTTTwithArray(key: string, eventname: string, values: number[]): void {
         let message = "GET /trigger/" + eventname + "/with/key/" + key + "?";
-        for(let i=0;i<values.length;i++){
-            if (i == values.length-1){
-                message = message + "value" + (i+1) + "=" + values[i];
-            }else{
-                message = message + "value" + (i+1) + "=" + values[i] + "&";
+        for (let i = 0; i < values.length; i++) {
+            if (i == values.length - 1) {
+                message = message + "value" + (i + 1) + "=" + values[i];
+            } else {
+                message = message + "value" + (i + 1) + "=" + values[i] + "&";
             }
         }
         message = message + " HTTP/1.1\r\nHost: maker.ifttt.com\r\nConnection: close\r\n\r\n";
         serial.writeString("AT+CIPMUX=0\r\n");
+        basic.pause(500);
         serial.writeString("AT+CIPSTART=\"TCP\",\"maker.ifttt.com\",80\r\n");
         basic.pause(1000);
         serial.writeString("AT+CIPSEND=" + message.length + "\r\n");
+        basic.pause(500);
         serial.writeString(message);
+        basic.pause(1000);
         serial.writeString("AT+CIPCLOSE\r\n");
     }
 
