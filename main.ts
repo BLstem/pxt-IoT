@@ -14,6 +14,7 @@ namespace ESP8266 {
     //% weight=82
     export function initializeWifi(tx: SerialPin, rx: SerialPin, baudrate: BaudRate): void {
         serial.redirect(tx, rx, baudrate);
+        serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => { });
     }
 
     // -------------- WiFi ----------------
