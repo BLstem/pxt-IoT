@@ -38,6 +38,7 @@ namespace ESP8266 {
     */
     //% blockId=esp8266_set_thingspeak
     //% block="Send ThingSpeak key %key| field1 %field1"
+    //% text.shadowOptions.toString=true
     //% weight=78
     export function sendThingspeak(key: string, field1: string): void {
         let message = "GET /update?api_key=" + key + "&field1=" + field1 + "\r\n\r\n";
@@ -84,6 +85,7 @@ namespace ESP8266 {
     */
     //% blockId=esp8266_set_ifttt
     //% block="Send IFTTT key %key|event_name %eventname|value %value"
+    //% text.shadowOptions.toString=true
     //% weight=80
     export function sendIFTTT(key: string, eventname: string, value: string): void {
         let message3 = "GET /trigger/" + eventname + "/with/key/" + key + "?value1=" + value + " HTTP/1.1\r\nHost: maker.ifttt.com\r\nConnection: close\r\n\r\n";
